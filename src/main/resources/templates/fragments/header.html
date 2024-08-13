@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400&display=swap" rel="stylesheet">
+  
+  <style>
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      background-color: #0414AF; /* Updated background color */
+      width: 100%; /* Set the header to take the full width of the viewport */
+      box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+      flex-wrap: wrap; /* Allow items to wrap onto multiple lines on smaller screens */
+    }
+    
+    .logo {
+      text-align: center; /* Center the logo horizontally */
+      flex:1;
+      left: 50%; /* Position it at the center from the left */
+      transform: translateX(-50%); /* Allow the logo to take available space */
+    }
+    .logo img {
+      max-height: 50px; /* Adjust as needed */
+      height: auto;
+      width: auto; /* Ensure logo scales proportionally */
+    }
+
+    .home-btn {
+      color: white;
+      background-color: transparent;
+      border: none;
+      font-size: 24px; /* Size of the icon */
+      transition: transform 0.3s ease-in-out;
+    }
+    .home-btn:hover {
+      background-color: white; /* Darker shade on hover */
+      transform: scale(0.8); /* Slightly increase the size on hover */
+    }
+    
+    .right-text {
+      color: white;
+      font-family: 'Kanit', sans-serif;    
+      font-size: 23px; /* Font size for the right-most text */
+      transition: transform 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth transition for hover effect */
+      align-items: center; /* Align logout icon and text vertically */
+      margin-right: 10px; /* Add spacing on the right for the text */
+      flex: 1; /* Allow right-text to take available space */
+      justify-content: center; /* Center the text horizontally */
+    }
+
+    .logout-btn {
+      color: white;
+      font-size: 18px; /* Font size for logout text */
+      transition: transform 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth transition for hover effect */
+      text-decoration: none; /* Remove underline from the link */
+      margin-left: auto; /* Push logout button to the right on desktop */
+    }
+    
+    .right-text:hover {
+      color: white; /* Change color on hover */
+      transform: scale(1.01); /* Scale up on hover */
+    }
+    
+    .logout-btn:hover {
+      color: #ddd; /* Change logout text color on hover */
+    }
+
+    /* Media queries for mobile responsiveness */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+      }.logo{
+          margin-left:35px;
+      }
+      .right-text {
+        margin-right: 0;
+        margin-bottom: 10px; /* Add spacing between elements on small screens */
+      }
+      .logout-btn {
+        margin-left: 0; /* Remove left margin on small screens */
+        margin-bottom: 10px; /* Add spacing below the button */
+      }
+    }
+  </style>
+</head>
+<body>
+  <header th:fragment="header">
+    <a href="/home" class="btn home-btn">
+      <i class="bi bi-house-door"></i>
+    </a>
+    <div class="right-text">
+      Lenin Job Order System
+    </div><div class="logo">
+      <img src="/images/logo.png" alt="Logo" style="max-width: 100px;">
+    </div>
+    <a href="/logout" class="logout-btn">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+  </header>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

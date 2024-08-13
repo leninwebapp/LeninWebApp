@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Order Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <div th:insert="~{fragments/header}"></div> 
+</head>
+<body>
+    
+    <style>
+         .container {
+            max-width: 750px; /* Adjust to your preferred max width */
+        }
+        
+        .btn-submit {
+    margin: 3rem;
+}
+
+.btn-submit .d-flex {
+    gap: 2rem;
+}
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-control {
+            width: 100%; /* Ensure full-width input elements */
+        }
+        .ms-3{
+            min-width:200px;
+        }
+        .leader{
+            min-width:400px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 10px; /* Reduces space between radio buttons */
+            align-items: center;
+        }
+        .form-check {
+            margin-bottom: 0;
+        }
+        .btn-submit {
+            display: flex;
+            justify-content: center;
+            margin: 3rem;
+        }
+        .selected-items {
+            display: flex;
+            align-items: center; /* Center items vertically */
+            flex-wrap: wrap; /* Allow items to wrap if they exceed container width */
+            background: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            height: 38px; /* Match the height of the date field */
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+        }
+        .selected-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem; /* Adjust for wrapping */
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+        }
+        .remove-item {
+            cursor: pointer;
+            color: #dc3545;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        .input-group .form-control {
+            flex: 1;
+        }
+
+        /* Container for the date inputs */
+        .date-container {
+            max-width: 200px;
+        }
+
+        /* Adjust the width of the input and radio buttons */
+        .input-group .form-control {
+            flex: 1;
+            max-width: 100px; /* Reduce the width to make space */
+        }
+
+        /* Flex container for Date Deployed and Man Power fields */
+        .date-manpower-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .date-manpower-container .form-group {
+            flex: 1;
+            
+        }
+        
+        .service{
+            min-width: 535px;
+        }
+        
+        .power{
+            min-width:120px;
+            max-width: 120px;
+            white-space:nowrap;
+        }
+        
+
+        /* Flex container for Service Request and Leader fields */
+        .service-leader-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .service-leader-container .form-group {
+            flex: 1;
+        }
+        
+        /* Make sure the Service Request and Leader fields expand */
+        .service-leader-container .form-group:first-child {
+            flex: 3;
+        }
+
+        .service-leader-container .form-group:last-child {
+            flex: 1;
+        }
+        .btn-submit {
+            display: flex;
+            justify-content: space-between;
+            margin: 3rem 0;
+        }
+    </style>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Job Order Form</h2>
+        <form id="jobOrderForm" th:action="@{/submit-job-order}" th:object="${jobOrderForm}" method="post">
+            <div class="row mb-3">
+                <div class="col-md-6 form-group date-container">
+                    <label for="dateIssued">Date Issued</label>
+                    <input type="date" class="form-control" id="dateIssued" th:field="*{dateIssued}" name="dateIssued" required readonly>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="jobCode">Job Code</label>
+                    <div class="radio-group" required>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="jobCodeCM" name="jobOrderType" value="CM" onchange="updateJobCode()" required>
+                            <label class="form-check-label" for="jobCodeCM">CM</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="jobCodeOCCULAR" name="jobOrderType" value="OCCULAR" onchange="updateJobCode()" required>
+                            <label class="form-check-label" for="jobCodeOCCULAR">OCULAR</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="jobCodePROJECT" name="jobOrderType" value="PROJECT" onchange="updateJobCode()" required>
+                            <label class="form-check-label" for="jobCodePROJECT">PROJECT</label>
+                        </div>
+                        <input type="text" class="form-control ms-3" id="jobCodeText" th:field="*{jobCode}" name="jobCodeText" placeholder="Generated Job Code" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="clientName">Client Name</label>
+                <input type="text" class="form-control" id="clientName" th:field="*{clientName}" name="clientName" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="contact">Contact</label>
+                <input type="text" class="form-control" id="contact" th:field="*{contact}" name="contact" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="requestRecommendation">Request Recommendation</label>
+                <textarea class="form-control" id="requestRecommendation" th:field="*{requestRecommendation}" name="requestRecommendation" rows="5" required></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="address">Address</label>
+                <textarea class="form-control" id="address" th:field="*{address}" name="address" rows="2" required></textarea>
+            </div>
+            <div class="row mb-3 service-leader-container">
+                <div class="col-md-6 form-group date-container">
+                    <label for="dateDeployed">Date Deployed</label>
+                    <input type="date" class="form-control" id="dateDeployed" th:field="*{dateDeployed}" name="dateDeployed" required>
+                </div>
+                <div class="col-md-6 form-group service">
+                    <label for="serviceRequest">Service Request</label>
+                    <input type="text" class="form-control" id="serviceRequest" th:field="*{serviceRequest}" name="serviceRequest" required>
+                </div>
+            </div>
+            <div class="row mb-3 service-leader-container">
+                <div class="col-md-6 form-group date-container">
+                    <label for="dateDue">Date Due</label>
+                    <input type="date" class="form-control" id="dateDue" th:field="*{dateDue}" name="dateDue" required>
+                </div>
+                <div class="col-md-3 form-group power">
+                    <label for="manPower">Man Power</label>
+                    <input type="number" class="form-control" id="manPower" th:field="*{manPower}" name="manPower" min="0" required>
+                </div>
+                <div class="col-md-6 form-group leader">
+                    <label for="leader">Leader</label>
+                    <input type="text" class="form-control" id="leader" th:field="*{leader}" name="leader" required>
+                </div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="instructions">Instructions</label>
+                <textarea class="form-control" id="instructions" th:field="*{instructions}" name="instructions" rows="5"></textarea>
+            </div>
+            
+            <div class="btn-submit">
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+</div>
+        </form>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('dateIssued').value = today;
+        });
+        
+        function formatDates() {
+            const dateIssued = document.getElementById('dateIssued');
+            const dateDeployed = document.getElementById('dateDeployed');
+            const dateDue = document.getElementById('dateDue');
+
+            const formattedDateIssued = formatDate(dateIssued.value);
+            const formattedDateDeployed = formatDate(dateDeployed.value);
+            const formattedDateDue = formatDate(dateDue.value);
+
+            dateIssued.value = formattedDateIssued;
+            dateDeployed.value = formattedDateDeployed;
+            dateDue.value = formattedDateDue;
+          }
+
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return `${month}/${day}/${year}`;
+        }
+
+        function resetForm() {
+            document.getElementById('jobOrderForm').reset();
+        }
+        function updateJobCode() {
+            const jobOrderType = document.querySelector('input[name="jobOrderType"]:checked');
+            if (jobOrderType) {
+                fetch(`/generate-job-code?jobOrderType=${jobOrderType.value}`)
+                    .then(response => response.text())
+                    .then(jobCode => {
+                        document.getElementById('jobCodeText').value = jobCode;
+                    })
+                    .catch(error => console.error('Error fetching job code:', error));
+            }
+        }
+
+        function addSelectedOption(option) {
+            const selectedItemsContainer = document.getElementById('selectedItems');
+            
+            // Check if the item is already selected
+            const existingItem = Array.from(selectedItemsContainer.children).find(item => item.textContent.trim().startsWith(option));
+            if (existingItem) {
+                return; // Option is already selected
+            }
+            
+            const selectedItemDiv = document.createElement('div');
+            selectedItemDiv.className = 'selected-item';
+            selectedItemDiv.innerHTML = `${option} <span class="remove-item" onclick="removeItem(this)">x</span>`;
+            selectedItemsContainer.appendChild(selectedItemDiv);
+
+            // Disable the selected option in the dropdown menu
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                if (item.textContent.trim() === option) {
+                    item.classList.add('disabled');
+                }
+            });
+        }
+
+        function removeItem(element) {
+            const selectedItemDiv = element.parentElement;
+            const itemText = selectedItemDiv.textContent.trim().slice(0, -1);
+            // Enable the corresponding option in the dropdown menu
+            const dropdownItems = document.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach(item => {
+                if (item.textContent.trim() === itemText) {
+                    item.classList.remove('disabled');
+                }
+            });
+            selectedItemDiv.remove();
+        }
+        
+        document.getElementById('jobOrderForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        Swal.fire({
+            title: 'Confirm Submission',
+            text: 'Are you sure you want to submit this form? Please review your details before confirming.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, submit it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show loading spinner
+                Swal.fire({
+                    title: 'Submitting...',
+                    text: 'Please wait while your submission is being processed.',
+                    icon: 'info',
+                    didOpen: () => {
+                        Swal.showLoading();
+                        formatDates();
+                    }
+                });
+
+                // Submit the form using fetch
+                fetch(this.action, {
+                    method: this.method,
+                    body: new FormData(this)
+                })
+                .then(response => response.text())
+                .then(data => {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Your job order has been submitted successfully. Please check you email to confirm the Job',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Clear the form after successful submission
+                        resetForm();
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'An error occurred while submitting your job order.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                });
+            }
+        });
+    });
+    </script>
+</body>
+<!--     <footer>   
+        <div th:insert="~{fragments/footer}"></div>
+    </footer>-->
+</html>
