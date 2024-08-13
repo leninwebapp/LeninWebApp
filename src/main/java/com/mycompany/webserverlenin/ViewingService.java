@@ -83,7 +83,7 @@ public class ViewingService {
             mangoDBConnection.updateWarranty();
 
             // Filter to include only documents with status "completed"
-            Document filter = new Document("status", "completed");
+            Document filter = new Document("status", "released");
 
             projectData = collection.find(filter)
                     .projection(new Document("job_code", 1)

@@ -25,6 +25,8 @@ public class ReleasingController {
 
     @GetMapping("/release/{jobCode}")
     public String releaseJob(@PathVariable String jobCode) {
+        releasingService.getDateReleased(jobCode);
+        releasingService.getTimeReleased(jobCode);
         boolean success = releasingService.releaseJobCode(jobCode);
         return success ? "Release successful" : "Release failed";
     }

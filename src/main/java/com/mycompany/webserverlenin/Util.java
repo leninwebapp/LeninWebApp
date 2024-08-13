@@ -32,4 +32,14 @@ public class Util {
         // Extract only the date part and format it
         return dtfDate.format(now);
     }
+    
+    public static String getTime() {
+        // Define the time format
+        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        // Get the current date and time in the Philippine time zone
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Manila"));
+        // Extract only the time part and format it
+        return dtfTime.format(now);
+    }
+    
 }

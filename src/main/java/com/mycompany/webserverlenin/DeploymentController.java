@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DeploymentController {
 
     private final DeploymentService deploymentService;
-
+    
     @Autowired
     public DeploymentController(DeploymentService deploymentService) {
         this.deploymentService = deploymentService;
@@ -17,6 +17,8 @@ public class DeploymentController {
 
     @GetMapping("/deploy/{jobCode}")
     public String deployJob(@PathVariable String jobCode) {
+        deploymentService.getDateDeployed(jobCode);
+        deploymentService.getTimeDeployed(jobCode);
         boolean success = deploymentService.deployJobCode(jobCode);
         return success ? "Deployment successful" : "Deployment failed";
     }

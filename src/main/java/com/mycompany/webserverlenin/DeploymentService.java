@@ -15,6 +15,7 @@ public class DeploymentService {
     public DeploymentService(MangoDBConnection mangoDBConnection) {
         this.mangoDBConnection = mangoDBConnection;
     }
+    
 
     public boolean deployJobCode(String jobCode) {
         try {
@@ -28,6 +29,30 @@ public class DeploymentService {
         } catch (MongoException e) {
             e.printStackTrace();
             return false; // Return false in case of an exception
+        }
+    }
+    
+    public void getDateDeployed(String jobCode) {
+        try {
+            MongoCollection<Document> collection = mangoDBConnection.getCollection();
+            
+            Document query = new Document("job_code", jobCode);
+            Document update = new Document("$set", new Document("date_deployed", Util.getDate()));
+            collection.updateOne(query, update);
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void getTimeDeployed(String jobCode) {
+        try {
+            MongoCollection<Document> collection = mangoDBConnection.getCollection();
+            
+            Document query = new Document("job_code", jobCode);
+            Document update = new Document("$set", new Document("time_deployed", Util.getTime()));
+            collection.updateOne(query, update);
+        } catch (MongoException e) {
+            e.printStackTrace();
         }
     }
     

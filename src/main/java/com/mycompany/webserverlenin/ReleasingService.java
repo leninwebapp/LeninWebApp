@@ -39,4 +39,28 @@ public class ReleasingService {
         }
     }
     
+    public void getDateReleased(String jobCode) {
+        try {
+            MongoCollection<Document> collection = mangoDBConnection.getCollection();
+            
+            Document query = new Document("job_code", jobCode);
+            Document update = new Document("$set", new Document("date_released", Util.getDate()));
+            collection.updateOne(query, update);
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void getTimeReleased(String jobCode) {
+        try {
+            MongoCollection<Document> collection = mangoDBConnection.getCollection();
+            
+            Document query = new Document("job_code", jobCode);
+            Document update = new Document("$set", new Document("time_released", Util.getTime()));
+            collection.updateOne(query, update);
+        } catch (MongoException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }
